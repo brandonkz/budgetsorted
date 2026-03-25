@@ -112,9 +112,16 @@ const renderResults = ({ fund, amount, advisorFee }) => {
       <h3>${fund.name}</h3>
       <p>${fund.provider} · ${fund.category}</p>
       <div class="grid" style="margin-top: 12px;">
+        <div>Fund fee (TER): <span class="highlight">${percent(fund.ter)}</span></div>
+        <div>Advisor fee: <span class="highlight">${percent(advisorFee)}</span></div>
         <div>All-in fee: <span class="highlight">${percent(totalFeeRate)}</span></div>
         <div>Annual fee cost: <span class="highlight">${currency(annualFees)}</span></div>
         <div>20-year fee drag: <span class="highlight">${currency(cost20)}</span></div>
+      </div>
+      <div class="notice" style="margin-top:12px;">
+        <strong>How we calculate:</strong><br/>
+        Annual fee = Investment × (Fund TER + Advisor fee)<br/>
+        ${currency(amount)} × (${percent(fund.ter)} + ${percent(advisorFee)}) = ${currency(annualFees)} per year
       </div>
     </div>
     <div class="card">
@@ -126,6 +133,10 @@ const renderResults = ({ fund, amount, advisorFee }) => {
         <div class="bar"><span style="width: ${barWidth(cost20)}"></span></div>
         <div>30 years: ${currency(cost30)}</div>
         <div class="bar"><span style="width: ${barWidth(cost30)}"></span></div>
+      </div>
+      <div class="notice" style="margin-top:10px;">
+        Fee drag = Future value at 8% gross − Future value at (8% − all‑in fee).<br/>
+        Assumes fees reduce growth every year (compounded).
       </div>
     </div>
     ${cheapest ? `
