@@ -1,5 +1,7 @@
 const form = document.getElementById("ombudForm");
 const results = document.getElementById("ombudResults");
+const rightsList = document.getElementById("rightsList");
+const redFlagsList = document.getElementById("redFlags");
 
 const buildComplaint = ({ name, email, advisor, fsp, product, date }) => {
   return `To: FAIS Ombud\n\nSubject: Complaint about undisclosed/excessive fees\n\nI, ${name}, hereby submit a complaint against ${advisor}${fsp ? ` (FSP ${fsp})` : ""}.\n\nSummary:\n- Product/Fund: ${product || "[Product/Fund]"}\n- Issue discovered: ${date || "[Date]"}\n- I requested clear disclosure of all fees (management, platform, advisor, and performance fees) and received inadequate or unclear information.\n- I believe the ongoing fees are excessive and not aligned with the services provided.\n\nRelief requested:\n1) Full written fee disclosure (all-in, in % and Rands).\n2) Evidence of services delivered for ongoing fees.\n3) Refund of unreasonable fees where applicable.\n\nI am available at ${email} for follow-up.\n\nRegards,\n${name}`;
@@ -8,6 +10,19 @@ const buildComplaint = ({ name, email, advisor, fsp, product, date }) => {
 const buildDisclosure = ({ name, email, advisor, fsp, product }) => {
   return `Subject: Request for full fee disclosure\n\nHello ${advisor},\n\nPlease provide a complete fee disclosure for my investment${product ? ` in ${product}` : ""}. This should include:\n- Total Expense Ratio (TER)\n- All-in fee (including advice and platform fees)\n- Any performance fees\n- Rand value of fees for the last 12 months\n- Confirmation of your ongoing service and its cost\n\nIf you are a registered FSP, please confirm your FSP number${fsp ? ` (currently recorded as ${fsp})` : ""}.\n\nRegards,\n${name}\n${email}`;
 };
+
+const renderList = (items, target) => {
+  target.innerHTML = items
+    .map((item) => `<div class="feature-item"><span>✅</span><div>${item}</div></div>`)
+    .join("");
+};
+
+fetch("data/advisor-fees.json")
+  .then((res) => res.json())
+  .then((data) => {
+    renderList(data.yourRights || [], rightsList);
+    renderList(data.redFlags || [], redFlagsList);
+  });
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();

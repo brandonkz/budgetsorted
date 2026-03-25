@@ -3,37 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BudgetSorted Fee Checker</title>
-  <meta name="description" content="Check your South African investment fees and see the long-term impact. Compare cheaper alternatives instantly." />
+  <title>RipOff Radar™ | Costra</title>
+  <meta name="description" content="Costra RipOff Radar™ checks South African investment fees, compares cheaper alternatives, and shows the long-term impact." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="container">
-    <nav class="nav">
-      <div class="logo">💸 BudgetSorted</div>
+  <header>
+    <nav class="container nav">
+      <div class="logo">Costra<span>•</span>RipOff Radar™</div>
       <div class="pill-list">
         <a class="pill" href="index.html">Home</a>
-        <a class="pill" href="ombud.html">FAIS Ombud Help</a>
-        <a class="pill" href="https://retirementsorted.co.za" target="_blank" rel="noreferrer">RetirementSorted</a>
+        <a class="pill" href="calculators.html">Calculators</a>
+        <a class="pill" href="ombud.html">Ombud Toolkit</a>
       </div>
     </nav>
   </header>
 
   <main class="container">
     <p class="section-label">Investment fee checker</p>
-    <h1>Am I being ripped off?</h1>
-    <p class="lead">Enter your fund, investment amount, and advisor fee. We’ll calculate your annual fees, long-term cost, and show cheaper alternatives.</p>
+    <h1>Stop overpaying. Start knowing.</h1>
+    <p class="lead">RipOff Radar™ exposes hidden fees, compares cheaper alternatives, and shows what high costs steal from your future.</p>
 
     <div class="grid grid-2">
       <div class="card">
         <form id="feeForm" class="grid" autocomplete="off">
-          <div>
+          <div class="suggestions">
             <div class="label">Fund name</div>
-            <input class="input" list="funds" id="fundInput" placeholder="e.g., Allan Gray Balanced Fund" required />
-            <datalist id="funds"></datalist>
+            <input class="input" id="fundInput" placeholder="e.g., Allan Gray Balanced Fund" required />
+            <div class="suggestion-list" id="fundSuggestions" hidden></div>
           </div>
           <div>
             <div class="label">Amount invested (R)</div>
@@ -42,6 +42,9 @@
           <div>
             <div class="label">Advisor fee % (optional)</div>
             <input class="input" type="number" id="advisorInput" placeholder="e.g., 1.5" step="0.1" min="0" />
+          </div>
+          <div class="dropzone">
+            <strong>Coming soon:</strong> drop your statement PDF here for instant scanning.
           </div>
           <button class="btn" type="submit">Check my fees</button>
         </form>
@@ -54,22 +57,23 @@
 
     <section class="container" style="padding-top: 40px;">
       <div class="card">
-        <h2>Shareable results</h2>
-        <p>Use the “Copy summary” button to share your result (screenshot-friendly).</p>
+        <h2>Share your result</h2>
+        <p>Send a screenshot or use the buttons below to share your fee check.</p>
         <div class="cta-row" style="margin-top: 16px;">
           <button class="btn btn-outline" id="copySummary">Copy summary</button>
-          <a class="btn" href="ombud.html">Complain to Ombud</a>
+          <a class="btn btn-ghost" id="shareWhatsapp" href="#">Share on WhatsApp</a>
+          <a class="btn btn-ghost" id="shareTwitter" href="#">Share on X</a>
         </div>
       </div>
     </section>
 
     <section class="container" style="padding-top: 10px;">
       <div class="card">
-        <h2>See the retirement impact</h2>
-        <p>Plug your savings into RetirementSorted’s calculators and see what better fees can do.</p>
+        <h2>Next step: stop the damage</h2>
+        <p>Use Costra’s calculators to see how better fees change your retirement trajectory.</p>
         <div class="cta-row" style="margin-top: 16px;">
-          <a class="btn" href="https://retirementsorted.co.za/compound-calculator" target="_blank" rel="noreferrer">Compound calculator</a>
-          <a class="btn btn-outline" href="https://retirementsorted.co.za/retirement-calculator" target="_blank" rel="noreferrer">Retirement calculator</a>
+          <a class="btn" href="calculators.html">Open calculators</a>
+          <a class="btn btn-outline" href="ombud.html">Ombud complaint toolkit</a>
         </div>
       </div>
     </section>

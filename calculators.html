@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Costra Calculators</title>
+  <meta name="description" content="Costra calculators: fee impact, retirement, two-pot, and compound interest built for South Africans." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <nav class="container nav">
+      <div class="logo">Costra<span>•</span>Calculators</div>
+      <div class="pill-list">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="fee-checker.html">RipOff Radar™</a>
+        <a class="pill" href="ombud.html">Ombud Toolkit</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <p class="section-label">Financial calculators</p>
+    <h1>Every calculator South Africans need.</h1>
+    <p class="lead">Built for real-world numbers, local rules, and the fee reality no one tells you about.</p>
+
+    <div class="tabs" style="margin: 24px 0;">
+      <button class="tab-button active" data-tab="fee-impact">Fee Impact</button>
+      <button class="tab-button" data-tab="retirement">Retirement</button>
+      <button class="tab-button" data-tab="two-pot">Two-Pot</button>
+      <button class="tab-button" data-tab="compound">Compound Interest</button>
+    </div>
+
+    <section class="tab-panel active" id="fee-impact">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Fee Impact Calculator</h2>
+          <div class="grid" style="margin-top: 16px;">
+            <div>
+              <div class="label">Investment amount (R)</div>
+              <input class="input" id="feeAmount" type="number" value="500000" min="0" />
+            </div>
+            <div>
+              <div class="label">Total fee % (all-in)</div>
+              <input class="input" id="feeRate" type="number" value="2.5" step="0.1" min="0" />
+            </div>
+            <div>
+              <div class="label">Years invested</div>
+              <input class="input" id="feeYears" type="number" value="20" min="1" />
+            </div>
+            <button class="btn" id="feeCalcBtn">Calculate fee damage</button>
+          </div>
+        </div>
+        <div class="card results" id="feeImpactResult">
+          <p class="notice">Enter your numbers to see the long-term cost of fees.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="retirement">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Retirement Calculator</h2>
+          <div class="grid" style="margin-top: 16px;">
+            <div>
+              <div class="label">Monthly savings (R)</div>
+              <input class="input" id="retMonthly" type="number" value="3000" min="0" />
+            </div>
+            <div>
+              <div class="label">Annual return %</div>
+              <input class="input" id="retReturn" type="number" value="10" step="0.1" min="0" />
+            </div>
+            <div>
+              <div class="label">Years to invest</div>
+              <input class="input" id="retYears" type="number" value="25" min="1" />
+            </div>
+            <button class="btn" id="retCalcBtn">Calculate retirement value</button>
+          </div>
+        </div>
+        <div class="card results" id="retirementResult">
+          <p class="notice">Find out if you’re on track for retirement.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="two-pot">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Two-Pot Calculator</h2>
+          <p>Estimate your available savings pot based on current pension value and salary.</p>
+          <div class="grid" style="margin-top: 16px;">
+            <div>
+              <div class="label">Current pension value (R)</div>
+              <input class="input" id="potValue" type="number" value="600000" min="0" />
+            </div>
+            <div>
+              <div class="label">Monthly salary (R)</div>
+              <input class="input" id="potSalary" type="number" value="25000" min="0" />
+            </div>
+            <button class="btn" id="potCalcBtn">Estimate withdrawable</button>
+          </div>
+        </div>
+        <div class="card results" id="twoPotResult">
+          <p class="notice">Based on a 10% seed and 15% contribution assumption.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="compound">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Compound Interest Calculator</h2>
+          <div class="grid" style="margin-top: 16px;">
+            <div>
+              <div class="label">Starting amount (R)</div>
+              <input class="input" id="compPrincipal" type="number" value="100000" min="0" />
+            </div>
+            <div>
+              <div class="label">Monthly contribution (R)</div>
+              <input class="input" id="compMonthly" type="number" value="1500" min="0" />
+            </div>
+            <div>
+              <div class="label">Annual return %</div>
+              <input class="input" id="compReturn" type="number" value="9" step="0.1" min="0" />
+            </div>
+            <div>
+              <div class="label">Years to grow</div>
+              <input class="input" id="compYears" type="number" value="20" min="1" />
+            </div>
+            <button class="btn" id="compCalcBtn">Calculate growth</button>
+          </div>
+        </div>
+        <div class="card results" id="compoundResult">
+          <p class="notice">See how small changes compound into big money.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" style="padding-top: 30px;">
+      <div class="card">
+        <h2>Now check if your fees are eating your returns</h2>
+        <div class="cta-row" style="margin-top: 16px;">
+          <a class="btn" href="fee-checker.html">Run RipOff Radar™</a>
+          <a class="btn btn-outline" href="ombud.html">Complain to Ombud</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>Calculations are estimates, not financial advice. Use Costra to compare fees and protect your returns.</div>
+  </footer>
+
+  <script src="js/calculators.js"></script>
+</body>
+</html>

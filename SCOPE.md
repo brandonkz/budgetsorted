@@ -1,4 +1,4 @@
-# BudgetSorted — WhatsApp Budget Tracker for South Africans
+# Costra — Track spending. Expose fees. Take control.
 
 ## One-Liner
 Text what you spent. Know where your money goes. No app download.
@@ -72,7 +72,7 @@ Text what you spent. Know where your money goes. No app download.
 ### Onboarding (< 2 minutes)
 ```
 User: Hi
-Bot: 👋 Welcome to BudgetSorted! I help you track spending on WhatsApp.
+Bot: 👋 Welcome to Costra! I help you track spending on WhatsApp.
 
 Quick setup — what's your monthly take-home pay?
 User: R25000
@@ -230,7 +230,7 @@ goals (id, user_id, name, target_amount, current_amount, deadline)
 | Morning check-in + evening summary | 1 hour |
 | Supabase schema + user management | 1 hour |
 | Onboarding flow | 1 hour |
-| Landing page (budgetsorted.co.za) | 1 hour |
+| Landing page (costra.co.za) | 1 hour |
 | Affiliate link integration | 1 hour |
 | Testing & polish | 2 hours |
 | **Total** | **~13 hours** |
@@ -240,8 +240,8 @@ Weekend build. MVP ready in 2 days.
 ---
 
 ## Domain & Branding
-- **Name**: BudgetSorted
-- **Domain**: budgetsorted.co.za (check availability)
+- **Name**: Costra
+- **Domain**: costra.co.za (check availability)
 - **WhatsApp**: New number on existing Meta Business account
 - **Tagline**: "Know where your money goes. No app needed."
 - **Colour**: Green (money) — #22c55e
@@ -254,7 +254,7 @@ Weekend build. MVP ready in 2 days.
 
 ## Cross-Sell Opportunities
 - FitSorted users → "Track your food AND your wallet"
-- BudgetSorted users → "Spending too much on takeout? Track calories too"
+- Costra users → "Spending too much on takeout? Track calories too"
 - Bundle: R59/mo for both (vs R85 separate)
 
 ---
@@ -308,7 +308,7 @@ Users link their bank account once → transactions auto-import → PWA shows fu
 
 ### PWA Dashboard Features
 ```
-budgetsorted.co.za/app (or app.budgetsorted.co.za)
+costra.co.za/app (or app.costra.co.za)
 
 ├── Dashboard (overview)
 │   ├── Monthly spending vs budget (donut chart)
@@ -366,11 +366,11 @@ budgetsorted.co.za/app (or app.budgetsorted.co.za)
 
 ---
 
-## BudgetSorted ↔ RetirementSorted Funnel
+## Costra ↔ RetirementSorted Funnel
 
 ### The Ecosystem
 ```
-BudgetSorted (track spending) → discover savings capacity
+Costra (track spending) → discover savings capacity
         ↓
 RetirementSorted (invest it) → calculators show compound growth
         ↓
@@ -379,7 +379,7 @@ Affiliate conversions → EasyEquities, Allan Gray, Sanlam, Old Mutual
 
 ### Trigger Points (bot detects → suggests)
 
-| Trigger | BudgetSorted Action | RetirementSorted Link |
+| Trigger | Costra Action | RetirementSorted Link |
 |---------|--------------------|-----------------------|
 | User saves >R1k in a month | "Nice! Want to see what R1k/mo grows to?" | retirementsorted.co.za/compound-calculator |
 | Savings rate >15% | "You're saving more than 80% of South Africans" | retirementsorted.co.za/retirement-calculator |
@@ -391,7 +391,7 @@ Affiliate conversions → EasyEquities, Allan Gray, Sanlam, Old Mutual
 
 ### Weekly Report Integration
 ```
-📋 BudgetSorted Week in Review
+📋 Costra Week in Review
 
 Total spent: R4,200 / R5,500 budget
 Saved this week: R1,300 ✅
@@ -408,33 +408,33 @@ Saved this week: R1,300 ✅
    Start with R100 → [EasyEquities affiliate link]
 ```
 
-### RetirementSorted → BudgetSorted (reverse funnel)
+### RetirementSorted → Costra (reverse funnel)
 - RetirementSorted calculator shows "you need to save R4,500/mo"
-- CTA: "Not sure where to find R4,500? Track your spending first → budgetsorted.co.za"
-- Blog posts: "Step 1 of retirement planning: know your numbers" → links to BudgetSorted
-- Two-pot content: "Before withdrawing, check if you actually need it" → BudgetSorted
+- CTA: "Not sure where to find R4,500? Track your spending first → costra.co.za"
+- Blog posts: "Step 1 of retirement planning: know your numbers" → links to Costra
+- Two-pot content: "Before withdrawing, check if you actually need it" → Costra
 
 ### Affiliate Revenue Per Funnel Stage
 
 | Stage | Product | Commission | Conversion |
 |-------|---------|-----------|------------|
-| Awareness (BudgetSorted free) | TymeBank, Capitec savings | R50-100/signup | 3-5% |
+| Awareness (Costra free) | TymeBank, Capitec savings | R50-100/signup | 3-5% |
 | Engaged (tracks for 30+ days) | EasyEquities TFSA | R50-100/signup | 5-8% |
 | Qualified (saves >R2k/mo) | Allan Gray unit trusts | R200-500/lead | 2-4% |
 | High value (saves >R5k/mo) | Sanlam RA, Old Mutual | R300-500/lead | 1-3% |
 | Tax season | RA top-up campaigns | R200-500/lead | 5-10% |
 
 ### Content Flywheel
-1. BudgetSorted generates spending data → anonymised insights for blog content
+1. Costra generates spending data → anonymised insights for blog content
 2. "The average SA user spends 23% on eating out" → RetirementSorted blog post
 3. "If you redirected half your Uber Eats spend, you'd retire 3 years earlier" → viral TikTok content
 4. Content drives traffic to both sites → more users → more data → more content
 
 ### Shared Domain Strategy
-- budgetsorted.co.za → spending tracker
+- costra.co.za → spending tracker
 - retirementsorted.co.za → retirement planning
 - Both link to each other naturally
-- Same "Sorted" brand family (FitSorted, BetSorted, BudgetSorted, RetirementSorted)
+- Same "Sorted" brand family (FitSorted, BetSorted, Costra, RetirementSorted)
 - Future: **MoneySorted** umbrella brand? (budgeting + retirement + tax + insurance)
 
 ---
