@@ -10,6 +10,12 @@ const copySummaryBtn = document.getElementById("copySummary");
 const shareWhatsapp = document.getElementById("shareWhatsapp");
 const shareTwitter = document.getElementById("shareTwitter");
 const suggestionsBox = document.getElementById("fundSuggestions");
+const pdfDropzone = document.getElementById("pdfDropzone");
+const pdfInput = document.getElementById("pdfInput");
+const pdfStatus = document.getElementById("pdfStatus");
+const scanSummary = document.getElementById("scanSummary");
+const aiKeyInput = document.getElementById("aiKey");
+const aiEnable = document.getElementById("aiEnable");
 
 let funds = [];
 
@@ -21,6 +27,26 @@ fetch(DATA_URL)
   .catch(() => {
     results.innerHTML = '<p class="notice">Fund database failed to load.</p>';
   });
+
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+
+if (aiKeyInput) {
+  const savedKey = localStorage.getItem("costraOpenAiKey");
+  if (savedKey) aiKeyInput.value = savedKey;
+  aiKeyInput.addEventListener("input", () => {
+    localStorage.setItem("costraOpenAiKey", aiKeyInput.value.trim());
+  });
+}
+
+if (aiEnable) {
+  const savedEnable = localStorage.getItem("costraEnableAi");
+  if (savedEnable === "true") aiEnable.checked = true;
+  aiEnable.addEventListener("change", () => {
+    localStorage.setItem("costraEnableAi", aiEnable.checked ? "true" : "false");
+  });
+}
 
 const currency = (value) =>
   value.toLocaleString("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 });
@@ -129,6 +155,279 @@ const renderResults = ({ fund, amount, advisorFee }) => {
     </div>
   `;
 };
+
+const providerPatterns = [
+  { regex: /Allan\s*Gray/i, provider: "Allan Gray" },
+  { regex: /Coronation/i, provider: "Coronation" },
+  { regex: /Sanlam/i, provider: "Sanlam" },
+  { regex: /Old\s*Mutual/i, provider: "Old Mutual" },
+  { regex: /Ninety\s*One/i, provider: "Ninety One" },
+  { regex: /Satrix/i, provider: "Satrix" },
+  { regex: /10X/i, provider: "10X" },
+  { regex: /PSG/i, provider: "PSG" },
+  { regex: /Discovery/i, provider: "Discovery" },
+  { regex: /Momentum/i, provider: "Momentum" },
+  { regex: /Liberty/i, provider: "Liberty" },
+  { regex: /Nedgroup/i, provider: "Nedgroup" }
+];
+
+const feePatterns = {
+  ter: [
+    /Total\s*Expense\s*Ratio[:\s]*(\d+\.?\d*)%/i,
+    /TER[:\s]*(\d+\.?\d*)%/i,
+    /Total\s*Investment\s*Charge[:\s]*(\d+\.?\d*)%/i,
+    /TIC[:\s]*(\d+\.?\d*)%/i
+  ],
+  managementFee: [
+    /Management\s*Fee[:\s]*(\d+\.?\d*)%/i,
+    /Annual\s*Management\s*Charge[:\s]*(\d+\.?\d*)%/i,
+    /AMC[:\s]*(\d+\.?\d*)%/i
+  ],
+  performanceFee: [/Performance\s*Fee[:\s]*(\d+\.?\d*)%/i],
+  advisorFee: [
+    /Adviser?\s*Fee[:\s]*(\d+\.?\d*)%/i,
+    /Advisory\s*Fee[:\s]*(\d+\.?\d*)%/i,
+    /Financial\s*Adviser?\s*Fee[:\s]*(\d+\.?\d*)%/i
+  ],
+  investmentValue: [
+    /(?:Market|Investment|Portfolio|Total)\s*Value[:\s]*R?\s*([\d,]+\.?\d*)/i,
+    /R\s*([\d,]+\.?\d*)\s*(?:invested|balance|value)/i
+  ]
+};
+
+const extractNumber = (value) => parseFloat(value.replace(/,/g, ""));
+
+const extractPatternValue = (text, patterns) => {
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return extractNumber(match[1]);
+  }
+  return null;
+};
+
+const detectProvider = (text) => {
+  for (const entry of providerPatterns) {
+    if (entry.regex.test(text)) return entry.provider;
+  }
+  return null;
+};
+
+const extractPdfText = async (file) => {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let text = "";
+  for (let i = 1; i <= pdf.numPages; i += 1) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map((item) => item.str).join(" ") + "\n";
+  }
+  return text;
+};
+
+const renderScanSummary = ({ providerName, scannedFunds }) => {
+  if (!scanSummary) return;
+
+  if (!scannedFunds.length) {
+    scanSummary.innerHTML = '<p class="notice">We could not auto-detect any funds. Try entering them manually above, or enable AI scanning.</p>';
+    scanSummary.hidden = false;
+    return;
+  }
+
+  const summaryRows = scannedFunds.map((item, index) => {
+    const amount = item.amount || 0;
+    const advisorFeeRate = (item.advisorFee || 0) / 100;
+    const ter = item.fundRef ? item.fundRef.ter : (item.ter || 0);
+    const totalFeeRate = ter + advisorFeeRate;
+    const annualFees = amount ? amount * totalFeeRate : 0;
+
+    const cheapest = item.fundRef ? findCheapestAlternative(item.fundRef) : null;
+    const potentialSaving = cheapest && amount
+      ? Math.max((totalFeeRate - cheapest.ter) * amount, 0)
+      : null;
+
+    return `
+      <div class="notice" style="margin-top: 12px;">
+        <strong>${index + 1}. ${item.name}</strong>${amount ? ` — ${currency(amount)}` : ""}<br />
+        ${item.ter ? `TER: ${item.ter}%` : ""}
+        ${item.advisorFee ? ` | Advisor: ${item.advisorFee}%` : ""}
+        ${totalFeeRate ? ` | Total: ${percent(totalFeeRate)}` : ""}<br />
+        ${annualFees ? `Annual fees: ${currency(annualFees)}` : ""}
+        ${cheapest ? `<br />Cheapest alternative: ${cheapest.name} (${percent(cheapest.ter)})` : ""}
+        ${potentialSaving !== null ? `<br />Potential saving: ${currency(potentialSaving)}/year` : ""}
+      </div>
+    `;
+  }).join("");
+
+  const totalAmount = scannedFunds.reduce((sum, item) => sum + (item.amount || 0), 0);
+  const totalFeesRate = scannedFunds.reduce((sum, item) => {
+    const ter = item.fundRef ? item.fundRef.ter : (item.ter || 0);
+    const advisorFeeRate = (item.advisorFee || 0) / 100;
+    return sum + ter + advisorFeeRate;
+  }, 0);
+  const totalAnnualFees = totalAmount ? totalAmount * totalFeesRate : 0;
+
+  scanSummary.innerHTML = `
+    <p class="section-label">Statement analysis${providerName ? ` — ${providerName}` : ""}</p>
+    <h3>Found ${scannedFunds.length} investment${scannedFunds.length === 1 ? "" : "s"}</h3>
+    ${summaryRows}
+    ${totalAmount ? `<div class="notice" style="margin-top: 16px;"><strong>Total portfolio:</strong> ${currency(totalAmount)}<br /><strong>Total annual fees:</strong> ${currency(totalAnnualFees)}</div>` : ""}
+  `;
+  scanSummary.hidden = false;
+};
+
+const parseStatementText = (text) => {
+  const lowerText = text.toLowerCase();
+  const providerName = detectProvider(text);
+
+  const extractedFees = {
+    ter: extractPatternValue(text, feePatterns.ter),
+    managementFee: extractPatternValue(text, feePatterns.managementFee),
+    performanceFee: extractPatternValue(text, feePatterns.performanceFee),
+    advisorFee: extractPatternValue(text, feePatterns.advisorFee)
+  };
+
+  const investmentValue = extractPatternValue(text, feePatterns.investmentValue);
+
+  const matchedFunds = funds.filter((fund) => lowerText.includes(fund.name.toLowerCase()));
+
+  const scannedFunds = matchedFunds.map((fund) => ({
+    name: fund.name,
+    fundRef: fund,
+    provider: fund.provider,
+    category: fund.category,
+    amount: investmentValue,
+    ter: extractedFees.ter || null,
+    managementFee: extractedFees.managementFee || null,
+    performanceFee: extractedFees.performanceFee || null,
+    advisorFee: extractedFees.advisorFee || null
+  }));
+
+  if (!scannedFunds.length && extractedFees.ter) {
+    scannedFunds.push({
+      name: providerName ? `${providerName} Fund` : "Unknown Fund",
+      fundRef: null,
+      provider: providerName || "Unknown",
+      category: "unknown",
+      amount: investmentValue,
+      ter: extractedFees.ter,
+      managementFee: extractedFees.managementFee || null,
+      performanceFee: extractedFees.performanceFee || null,
+      advisorFee: extractedFees.advisorFee || null
+    });
+  }
+
+  return { providerName, scannedFunds, extractedFees };
+};
+
+const updatePdfStatus = (message) => {
+  if (pdfStatus) {
+    pdfStatus.textContent = message;
+  }
+};
+
+const applyScanToForm = (scanData) => {
+  if (!scanData.scannedFunds.length) return;
+  const first = scanData.scannedFunds[0];
+
+  if (first.fundRef) {
+    fundInput.value = first.fundRef.name;
+  } else {
+    fundInput.value = first.name;
+  }
+
+  if (first.amount) {
+    amountInput.value = Math.round(first.amount);
+  }
+
+  if (first.advisorFee) {
+    advisorInput.value = first.advisorFee;
+  }
+
+  if (first.fundRef || first.ter) {
+    const fundForRender = first.fundRef || {
+      name: first.name,
+      provider: first.provider || "Unknown",
+      category: first.category || "unknown",
+      ter: first.ter || 0
+    };
+    const amount = first.amount || parseFloat(amountInput.value || "0");
+    if (amount) {
+      renderResults({ fund: fundForRender, amount, advisorFee: (first.advisorFee || 0) / 100 });
+    }
+  }
+};
+
+const handlePdfFile = async (file) => {
+  if (!file) return;
+  if (!file.type.includes("pdf") && !file.name.toLowerCase().endsWith(".pdf")) {
+    updatePdfStatus("Please upload a PDF file.");
+    return;
+  }
+  if (!window.pdfjsLib) {
+    updatePdfStatus("PDF scanning is unavailable. Please refresh and try again.");
+    return;
+  }
+  if (!funds.length) {
+    updatePdfStatus("Fund database still loading. Please try again in a moment.");
+    return;
+  }
+
+  updatePdfStatus(`Analysing ${file.name}...`);
+  if (scanSummary) scanSummary.hidden = true;
+
+  try {
+    const text = await extractPdfText(file);
+    const scanData = parseStatementText(text);
+
+    const hasFees = scanData.scannedFunds.some(
+      (item) => item.ter || item.managementFee || item.performanceFee || item.advisorFee
+    );
+
+    if (!scanData.scannedFunds.length || !hasFees) {
+      updatePdfStatus(`We couldn't auto-detect your funds in ${file.name}. Try entering them manually above, or enable AI scanning.`);
+      renderScanSummary({ providerName: scanData.providerName, scannedFunds: [] });
+      return;
+    }
+
+    updatePdfStatus(`✅ ${file.name} — Found ${scanData.scannedFunds.length} investment${scanData.scannedFunds.length === 1 ? "" : "s"}.`);
+    renderScanSummary(scanData);
+    applyScanToForm(scanData);
+  } catch (error) {
+    updatePdfStatus("Something went wrong while reading your PDF. Please try again.");
+  }
+};
+
+if (pdfDropzone && pdfInput) {
+  const preventDefaults = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    pdfDropzone.addEventListener(eventName, preventDefaults, false);
+  });
+
+  pdfDropzone.addEventListener("drop", (event) => {
+    const file = event.dataTransfer.files[0];
+    handlePdfFile(file);
+  });
+
+  pdfDropzone.addEventListener("click", () => {
+    pdfInput.click();
+  });
+
+  pdfDropzone.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      pdfInput.click();
+    }
+  });
+
+  pdfInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    handlePdfFile(file);
+  });
+}
 
 const form = document.getElementById("feeForm");
 form.addEventListener("submit", (event) => {
