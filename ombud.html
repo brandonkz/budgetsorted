@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAIS Ombud Templates | BudgetSorted</title>
+  <meta name="description" content="Generate FAIS Ombud complaint templates and fee disclosure requests." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">💸 BudgetSorted</div>
+      <div class="pill-list">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="fee-checker.html">Fee Checker</a>
+        <a class="pill" href="https://retirementsorted.co.za" target="_blank" rel="noreferrer">RetirementSorted</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <p class="section-label">FAIS Ombud</p>
+    <h1>Complain about excessive fees</h1>
+    <p class="lead">Generate a complaint letter or request a formal fee disclosure. Use this if your advisor refuses to explain fees or charges unreasonable ongoing costs.</p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <form id="ombudForm" class="grid" autocomplete="off">
+          <div>
+            <div class="label">Your full name</div>
+            <input class="input" id="clientName" required />
+          </div>
+          <div>
+            <div class="label">Your email</div>
+            <input class="input" id="clientEmail" type="email" required />
+          </div>
+          <div>
+            <div class="label">Advisor / firm name</div>
+            <input class="input" id="advisorName" required />
+          </div>
+          <div>
+            <div class="label">FSP number (if known)</div>
+            <input class="input" id="fspNumber" />
+          </div>
+          <div>
+            <div class="label">Product or fund</div>
+            <input class="input" id="productName" />
+          </div>
+          <div>
+            <div class="label">When did you discover the issue?</div>
+            <input class="input" id="issueDate" type="date" />
+          </div>
+          <button class="btn" type="submit">Generate templates</button>
+        </form>
+      </div>
+
+      <div class="card results" id="ombudResults">
+        <p class="notice">Fill in your details to generate a complaint letter and fee disclosure request.</p>
+      </div>
+    </div>
+
+    <section class="container" style="padding-top: 40px;">
+      <div class="card">
+        <h2>Useful links</h2>
+        <div class="grid grid-2">
+          <div class="notice">
+            <strong>FSCA FSP Lookup</strong><br />
+            <a href="https://www.fsca.co.za/Fais/Pages/FSP-Search.aspx" target="_blank" rel="noreferrer">Search for your advisor’s FSP number</a>
+          </div>
+          <div class="notice">
+            <strong>FAIS Ombud complaint form</strong><br />
+            <a href="https://www.faisombud.co.za/" target="_blank" rel="noreferrer">Submit your complaint online</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>FAIS Ombud complaints must be submitted within 3 years of the act/omission. This is not legal advice.</div>
+  </footer>
+
+  <script src="js/ombud.js"></script>
+</body>
+</html>

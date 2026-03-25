@@ -1,0 +1,83 @@
+{
+  "dataStatus": "RESEARCHED_MARCH_2026",
+  "lastUpdated": "2026-03-25",
+  "advisorFeeBenchmarks": {
+    "averageAUM": {
+      "description": "Average % of assets under management charged by SA financial advisors",
+      "average": 1.0,
+      "range": {
+        "low": 0.5,
+        "typical": 1.0,
+        "high": 1.5,
+        "ripOff": 2.0
+      },
+      "note": "This is ON TOP of fund TERs. So a 1% advisor fee + 1.6% fund TER = 2.6% total."
+    },
+    "feeByPortfolioSize": [
+      { "range": "Under R500k", "typicalFee": "1.15%", "fairFee": "0.75%", "note": "Small portfolios get hit hardest percentage-wise" },
+      { "range": "R500k - R1M", "typicalFee": "1.00%", "fairFee": "0.60%", "note": "Should negotiate down from 1%" },
+      { "range": "R1M - R5M", "typicalFee": "0.85%", "fairFee": "0.50%", "note": "Advisors make great money here, negotiate hard" },
+      { "range": "R5M - R10M", "typicalFee": "0.65%", "fairFee": "0.40%", "note": "Should be getting premium service for these fees" },
+      { "range": "Over R10M", "typicalFee": "0.50%", "fairFee": "0.30%", "note": "High net worth - fees should be rock bottom" }
+    ],
+    "feeOnlyAdvisors": {
+      "description": "Fee-only advisors charge flat fees instead of % of assets",
+      "hourlyRate": { "range": "R1,500 - R3,500/hour", "average": "R2,500/hour" },
+      "annualPlan": { "range": "R5,000 - R15,000/year", "average": "R8,000/year" },
+      "onceOffPlan": { "range": "R8,000 - R25,000", "average": "R15,000" },
+      "note": "Fee-only is almost always cheaper for portfolios over R500k. An R800k portfolio paying 1% AUM = R8,000/year — same as a full annual plan from a fee-only advisor."
+    }
+  },
+  "totalCostExample": {
+    "scenario": "R800,000 portfolio with a typical advisor",
+    "fundTER": { "typical": 1.60, "cost": 12800 },
+    "advisorFee": { "typical": 1.00, "cost": 8000 },
+    "platformFee": { "typical": 0.30, "cost": 2400 },
+    "totalAnnual": { "percentage": 2.90, "cost": 23200 },
+    "compoundCost20yr": 695000,
+    "compoundCost30yr": 1390000,
+    "cheapAlternative": {
+      "fund": "Satrix Balanced Index Fund via EasyEquities",
+      "fundTER": 0.40,
+      "platformFee": 0.25,
+      "advisorFee": 0,
+      "totalAnnual": { "percentage": 0.65, "cost": 5200 },
+      "annualSaving": 18000,
+      "saving20yr": 540000,
+      "saving30yr": 1080000
+    }
+  },
+  "redFlags": [
+    "Advisor fee above 1.5% on any portfolio size",
+    "No annual fee disclosure statement provided",
+    "Switching funds frequently (churning) to generate fees",
+    "Recommending funds from only one provider (likely getting higher commission)",
+    "Not explaining performance fees or hidden costs",
+    "Recommending wrap funds (fund-of-funds) that add another layer of fees",
+    "Charging initial fees (upfront deductions from your investment)",
+    "Not registered with the FSCA or no FSP number",
+    "Pushing life insurance products you don't need",
+    "No written record of advice (IPS - Investment Policy Statement)"
+  ],
+  "yourRights": [
+    "Right to a clear fee disclosure BEFORE investing (FAIS Act)",
+    "Right to an annual fee statement showing all costs",
+    "Right to switch advisors or go DIY at any time",
+    "Right to complain to FAIS Ombud if treated unfairly",
+    "Right to see your advisor's FSP number and verify registration",
+    "Right to know if your advisor earns commission from product providers",
+    "Right to a suitability analysis (advice must match your needs)",
+    "Right to cooling-off period on new investments"
+  ],
+  "faisOmbud": {
+    "name": "FAIS Ombud (Financial Advisory and Intermediary Services)",
+    "phone": "012 470 9080",
+    "tollFree": "0800 110 443",
+    "email": "info@faisombud.co.za",
+    "complaintsEmail": "complaints@faisombud.co.za",
+    "website": "https://www.faisombud.co.za",
+    "onlineComplaint": "https://www.faisombud.co.za/online-complaint-form",
+    "fscaRegisterCheck": "https://www.fsca.co.za/Regulated%20Entities/Pages/Search-Financial-Service-Providers.aspx",
+    "note": "Free to use. Must first complain to the advisor/company directly. If not resolved within 6 weeks, escalate to FAIS Ombud."
+  }
+}
